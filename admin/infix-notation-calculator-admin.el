@@ -30,17 +30,17 @@
          '%empty)
         (parser-generator-set-look-ahead-number 1)
         (setq
-         parser-generator--global-attributes
+         parser-generator-lr--global-precedence-attributes
          '(%left %precedence %right))
         (setq
          parser-generator--context-sensitive-attributes
          '(%prec))
         (setq
-         parser-generator-lr--global-precedence-attributes
-         '(%left %precedence %right))
-        (setq
          parser-generator-lr--context-sensitive-precedence-attribute
          '%prec)
+        (setq
+         parser-generator--global-attributes
+         '(%left %precedence %right))
         (setq
          parser-generator--global-declaration
          '(
@@ -115,7 +115,7 @@
         (setq
          parser-generator-lex-analyzer--function
          (lambda (index)
-           (with-current-buffer "*buffer*"
+           (with-current-buffer "*infix-notation-calculator-buffer*"
              (let ((token))
                (when
                    (<
@@ -149,7 +149,7 @@
         (setq
          parser-generator-lex-analyzer--get-function
          (lambda (token)
-           (with-current-buffer "*buffer*"
+           (with-current-buffer "*infix-notation-calculator-buffer*"
              (let ((start (car (cdr token)))
                    (end (cdr (cdr token))))
                (when (<= end (point-max))
@@ -162,14 +162,17 @@
                       (string-to-number symbol)))
                    symbol))))))
 
+        (parser-generator-process-grammar)
+        (parser-generator-lr-generate-parser-tables)
+
         (let ((export (parser-generator-lr-export-to-elisp "infix-notation-calculator-parser"))
-              (default-directory (expand-file-name "../")))
+              (file-name (expand-file-name "infix-notation-calculator-parser.el")))
           (with-temp-buffer
             (insert export)
-            (write-file "infix-notation-calculator-parser.el")
-            (kill-buffer)))
+            (write-file file-name)
+            (message "Parser Generator at '%S'" file-name)
+            (kill-buffer))))
 
-        (message "Parser Generator at infix-notation-calculator-parser.el"))
        (error "Parser Generator is not available!")))
 
 

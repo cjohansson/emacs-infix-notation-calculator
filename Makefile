@@ -21,4 +21,4 @@ test:
 
 .PHONY: admin
 admin:
-	$(EMACS_CMD) -L ../emacs-parser/ -l admin/infix-notation-calculator-admin.el -f "infix-notation-calculator-admin"
+	$(EMACS_CMD) -L ../emacs-parser/ -l admin/infix-notation-calculator-admin.el -eval "(progn (require 'parser-generator-lr-export)(infix-notation-calculator-admin))"
