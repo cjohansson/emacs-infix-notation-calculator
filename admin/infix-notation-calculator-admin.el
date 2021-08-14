@@ -1,4 +1,4 @@
-;; infix-notation-calculator.el --- Infix Notation Calculator -*- lexical-binding: t -*-
+;; infix-notation-calculator-admin.el --- Admin for Infix Notation Calculator -*- lexical-binding: t -*-
 
 
 ;;; Commentary:
@@ -7,17 +7,8 @@
 ;;; Code:
 
 
-;; TODO Create mode here based on fundamental mode
-
-(defun infix-notation-calculator-on-selected-region ()
-  "Calculate results of selected region."
-  (interactive)
-  ;; TODO Implement this
-  )
-
-
-(defun infix-notation-calculator-generate-parser ()
-  "Generate parser for plug-in."
+(defun infix-notation-calculator-admin ()
+  "Perform administrative actions for plugin."
   (if (and
        (boundp 'parser-generator--e-identifier)
        (fboundp 'parser-generator-set-look-ahead-number)
@@ -171,14 +162,15 @@
                       (string-to-number symbol)))
                    symbol))))))
 
-        (let ((export (parser-generator-lr-export-to-elisp "infix-notation-calculator-parser")))
+        (let ((export (parser-generator-lr-export-to-elisp "infix-notation-calculator-parser"))
+              (default-directory (expand-file-name "../")))
           (with-temp-buffer
             (insert export)
             (write-file "infix-notation-calculator-parser.el")
-            (kill-buffer))
-          )
+            (kill-buffer)))
+
         (message "Parser Generator at infix-notation-calculator-parser.el"))
        (error "Parser Generator is not available!")))
 
 
-;;; infix-notation-calculator.el ends here
+;;; infix-notation-calculator-admin.el ends here
