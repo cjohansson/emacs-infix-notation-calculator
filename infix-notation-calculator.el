@@ -9,8 +9,33 @@
 
 (require 'infix-notation-calculator-parser)
 
-;; TODO Create mode here based on fundamental mode
+(defvar infix-notation-calculator-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "<C-return>") #'infix-notation-calculator-on-current-line)
+    map)
+  "Keymap for `infix-notation-calculator-mode'.")
 
+(define-derived-mode infix-notation-calculator-mode fundamental-mode "InfixCalc"
+
+  ;; Skip comments when navigating via syntax-table
+  (setq-local parse-sexp-ignore-comments t)
+
+  ;; Font lock
+  ;; This makes it possible to have full control over syntax coloring from the lexer
+  (setq-local font-lock-keywords-only nil)
+  (setq-local font-lock-defaults '(nil t))
+
+  ;; TODO Perhaps fix syntax-coloring?
+
+  )
+
+(defun infix-notation-calculator-on-current-line ()
+  "Calculate results of current line and output results on next line."
+
+  ;; TODO
+  )
+
+;;;###autoload
 (defun infix-notation-calculator-on-selected-region ()
   "Calculate results of selected region."
   (interactive)

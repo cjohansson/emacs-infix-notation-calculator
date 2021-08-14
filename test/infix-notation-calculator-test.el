@@ -33,7 +33,13 @@
   (should
    (equal
     10.0
-    (infix-notation-calculator--translate-string "2*3+4\n"))))
+    (infix-notation-calculator--translate-string "2*3+4\n")))
+
+  ;; TODO Test (infix-notation-calculator-on-current-line)
+
+  ;; TODO Test mode (infix-notation-calculator-mode)
+
+  )
 
 
 (provide 'infix-notation-calculator-test)
