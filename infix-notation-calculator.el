@@ -26,14 +26,37 @@
   (setq-local font-lock-defaults '(nil t))
 
   ;; TODO Perhaps fix syntax-coloring?
+  (use-local-map infix-notation-calculator-mode-map)
 
   )
 
 (defun infix-notation-calculator-on-current-line ()
   "Calculate results of current line and output results on next line."
+  (save-excursion
+    (let ((start)
+          (end)
+          (trailing-equals))
+      (beginning-of-line)
+      (setq start (point))
+      (end-of-line)
+      (setq end (point))
+      (let ((line (buffer-substring-no-properties start end)))
 
-  ;; TODO
-  )
+        ;; Check if line ends with an equals symbol
+        (when (string-match-p "^.+=$" line)
+          (setq trailing-equals t))
+
+        (setq
+         line
+         (infix-notation-calculator--adjust-string
+          line))
+        (let ((translate
+               (infix-notation-calculator--translate-string
+                line)))
+          (unless trailing-equals
+            (insert "="))
+          (insert (format "\n%S" translate))
+          translate)))))
 
 ;;;###autoload
 (defun infix-notation-calculator-on-selected-region ()
@@ -51,12 +74,13 @@
   "Translate STRING, return value."
   (unless (get-buffer "*infix-notation-calculator-buffer*")
     (generate-new-buffer "*infix-notation-calculator-buffer*"))
-  (switch-to-buffer "*infix-notation-calculator-buffer*")
-  (kill-region (point-min) (point-max))
-  (insert string)
-  (let ((translation (infix-notation-calculator-parser-translate)))
-    (kill-buffer)
-    translation))
+  (save-excursion
+    (switch-to-buffer "*infix-notation-calculator-buffer*")
+    (kill-region (point-min) (point-max))
+    (insert string)
+    (let ((translation (infix-notation-calculator-parser-translate)))
+      (kill-buffer)
+      translation)))
 
 (defun infix-notation-calculator--adjust-string (string)
   "Adjust STRING for parser."

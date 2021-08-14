@@ -21,6 +21,7 @@
    (equal
     "abc\n"
     (infix-notation-calculator--adjust-string "abc\n")))
+  (message "Passes tests for (infix-notation-calculator--adjust-string)")
 
   (should
    (equal
@@ -34,10 +35,49 @@
    (equal
     10.0
     (infix-notation-calculator--translate-string "2*3+4\n")))
+  (message "Passes tests for (infix-notation-calculator--translate-string)")
 
-  ;; TODO Test (infix-notation-calculator-on-current-line)
+  (with-temp-buffer
+    (insert "-5-1")
+    (should
+     (equal
+      -6.0
+      (infix-notation-calculator-on-current-line)))
 
-  ;; TODO Test mode (infix-notation-calculator-mode)
+    (goto-char (point-max))
+    (insert "\n")
+    (insert "10+30/5=")
+    (should
+     (equal
+      16.0
+      (infix-notation-calculator-on-current-line)))
+
+    (let ((buffer-contents
+           (buffer-substring-no-properties
+            (point-min)
+            (point-max))))
+      (should
+       (equal
+        "-5-1=\n-6.0\n10+30/5=\n16.0"
+        buffer-contents))))
+  (message "Passes tests for (infix-notation-calculator-on-current-line)")
+
+  ;; TODO Make this work
+  (with-temp-buffer
+    (infix-notation-calculator-mode)
+    (insert "3*(1+1)=")
+    (execute-kbd-macro (kbd "<C-return>"))
+    (insert "\n5+3*3")
+    (execute-kbd-macro (kbd "<C-return>"))
+    (let ((buffer-contents
+           (buffer-substring-no-properties
+            (point-min)
+            (point-max))))
+      (should
+       (equal
+        "3*(1+1)=\n6.0\n5+3*3=\n14.0"
+        buffer-contents))))
+  (message "Passes tests for (infix-notation-calculator-mode)")
 
   )
 
