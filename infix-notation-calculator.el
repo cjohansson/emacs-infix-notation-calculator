@@ -26,37 +26,53 @@
   (setq-local font-lock-defaults '(nil t))
 
   ;; TODO Perhaps fix syntax-coloring?
-  (use-local-map infix-notation-calculator-mode-map)
 
   )
 
+(defun infix-notation-calculator-on-minibuffer ()
+  "Calculate results of mini-buffer and output result in messages."
+  (interactive)
+  (let ((minibuffer-string (read-string "Calculate:")))
+    (setq
+     minibuffer-string
+     (infix-notation-calculator--adjust-string
+      minibuffer-string))
+    (let ((translate
+           (infix-notation-calculator--translate-string
+            minibuffer-string)))
+      ;; Should not switch buffer
+      (unless (get-buffer "*InfixCalc Minibuffer History*")
+        (generate-new-buffer "*InfixCalc Minibuffer History*"))
+      (with-current-buffer "*InfixCalc Minibuffer History*"
+        (insert (format "\n%s=%S" minibuffer-string translate)))
+      (message "%S" translate)
+      translate)))
+
 (defun infix-notation-calculator-on-current-line ()
   "Calculate results of current line and output results on next line."
-  (save-excursion
-    (let ((start)
-          (end)
-          (trailing-equals))
-      (beginning-of-line)
-      (setq start (point))
-      (end-of-line)
-      (setq end (point))
-      (let ((line (buffer-substring-no-properties start end)))
+  (interactive)
+  (let ((start)
+        (end))
+    (beginning-of-line)
+    (setq start (point))
+    (end-of-line)
+    (setq end (point))
+    (let ((line (buffer-substring-no-properties start end)))
 
-        ;; Check if line ends with an equals symbol
-        (when (string-match-p "^.+=$" line)
-          (setq trailing-equals t))
+      ;; When we have a trailing equals symbol, delete it
+      (when (string-match-p "^.+=$" line)
+        (delete-char -1)
+        (setq line (substring line 0 -1)))
 
-        (setq
-         line
-         (infix-notation-calculator--adjust-string
-          line))
-        (let ((translate
-               (infix-notation-calculator--translate-string
-                line)))
-          (unless trailing-equals
-            (insert "="))
-          (insert (format "\n%S" translate))
-          translate)))))
+      (setq
+       line
+       (infix-notation-calculator--adjust-string
+        line))
+      (let ((translate
+             (infix-notation-calculator--translate-string
+              line)))
+        (insert (format "\n=%S" translate))
+        translate))))
 
 ;;;###autoload
 (defun infix-notation-calculator-on-selected-region ()
@@ -74,8 +90,7 @@
   "Translate STRING, return value."
   (unless (get-buffer "*infix-notation-calculator-buffer*")
     (generate-new-buffer "*infix-notation-calculator-buffer*"))
-  (save-excursion
-    (switch-to-buffer "*infix-notation-calculator-buffer*")
+  (with-current-buffer "*infix-notation-calculator-buffer*"
     (kill-region (point-min) (point-max))
     (insert string)
     (let ((translation (infix-notation-calculator-parser-translate)))

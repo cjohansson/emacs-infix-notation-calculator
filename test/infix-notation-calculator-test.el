@@ -12,6 +12,7 @@
 
 (defun infix-notation-calculator-test ()
   "Test mode and interactive functions."
+  (transient-mark-mode t)
 
   (should
    (equal
@@ -38,7 +39,7 @@
   (message "Passes tests for (infix-notation-calculator--translate-string)")
 
   (with-temp-buffer
-    (insert "-5-1")
+    (insert "-5-1=")
     (should
      (equal
       -6.0
@@ -46,7 +47,7 @@
 
     (goto-char (point-max))
     (insert "\n")
-    (insert "10+30/5=")
+    (insert "10+30/5")
     (should
      (equal
       16.0
@@ -58,16 +59,15 @@
             (point-max))))
       (should
        (equal
-        "-5-1=\n-6.0\n10+30/5=\n16.0"
+        "-5-1\n=-6.0\n10+30/5\n=16.0"
         buffer-contents))))
   (message "Passes tests for (infix-notation-calculator-on-current-line)")
 
-  ;; TODO Make this work
   (with-temp-buffer
     (infix-notation-calculator-mode)
-    (insert "3*(1+1)=")
+    (insert "3*(1+1)")
     (execute-kbd-macro (kbd "<C-return>"))
-    (insert "\n5+3*3")
+    (insert "\n5+3*3=")
     (execute-kbd-macro (kbd "<C-return>"))
     (let ((buffer-contents
            (buffer-substring-no-properties
@@ -75,7 +75,7 @@
             (point-max))))
       (should
        (equal
-        "3*(1+1)=\n6.0\n5+3*3=\n14.0"
+        "3*(1+1)\n=6.0\n5+3*3\n=14.0"
         buffer-contents))))
   (message "Passes tests for (infix-notation-calculator-mode)")
 
