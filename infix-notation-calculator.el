@@ -37,16 +37,14 @@
      minibuffer-string
      (infix-notation-calculator--adjust-string
       minibuffer-string))
-    (let ((translate
+    (let ((translation
            (infix-notation-calculator--translate-string
             minibuffer-string)))
-      ;; Should not switch buffer
-      (unless (get-buffer "*InfixCalc Minibuffer History*")
-        (generate-new-buffer "*InfixCalc Minibuffer History*"))
-      (with-current-buffer "*InfixCalc Minibuffer History*"
-        (insert (format "\n%s=%S" minibuffer-string translate)))
-      (message "%S" translate)
-      translate)))
+      (infix-notation-calculator--log-calculation
+       minibuffer-string
+       translation)
+      (message "%S" translation)
+      translation)))
 
 (defun infix-notation-calculator-on-current-line ()
   "Calculate results of current line and output results on next line."
@@ -68,11 +66,14 @@
        line
        (infix-notation-calculator--adjust-string
         line))
-      (let ((translate
+      (let ((translation
              (infix-notation-calculator--translate-string
               line)))
-        (insert (format "\n=%S" translate))
-        translate))))
+        (infix-notation-calculator--log-calculation
+         line
+         translation)
+        (insert (format "\n=%S" translation))
+        translation))))
 
 ;;;###autoload
 (defun infix-notation-calculator-on-selected-region ()
@@ -83,8 +84,13 @@
      selected-text
      (infix-notation-calculator--adjust-string
       selected-text))
-    (infix-notation-calculator--translate-string
-     selected-text)))
+    (let ((translation
+           (infix-notation-calculator--translate-string
+            selected-text)))
+      (infix-notation-calculator--log-calculation
+       selected-text
+       translation)
+      translation)))
 
 (defun infix-notation-calculator--translate-string (string)
   "Translate STRING, return value."
@@ -96,6 +102,15 @@
     (let ((translation (infix-notation-calculator-parser-translate)))
       (kill-buffer)
       translation)))
+
+(defun infix-notation-calculator--log-calculation (query result)
+  "Log calculation QUERY and RESULT in buffer *InfixCalc History*."
+  ;; Should not switch buffer
+  (unless (get-buffer "*InfixCalc History*")
+    (generate-new-buffer "*InfixCalc History*"))
+  (with-current-buffer "*InfixCalc History*"
+    (goto-char (point-max))
+    (insert (format "\n%s=%s" query result))))
 
 (defun infix-notation-calculator--adjust-string (string)
   "Adjust STRING for parser."

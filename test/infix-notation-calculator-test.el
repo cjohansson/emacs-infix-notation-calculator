@@ -66,9 +66,9 @@
   (with-temp-buffer
     (infix-notation-calculator-mode)
     (insert "3*(1+1)")
-    (execute-kbd-macro (kbd "<C-return>"))
+    (call-interactively #'infix-notation-calculator-on-current-line)
     (insert "\n5+3*3=")
-    (execute-kbd-macro (kbd "<C-return>"))
+    (call-interactively #'infix-notation-calculator-on-current-line)
     (let ((buffer-contents
            (buffer-substring-no-properties
             (point-min)
