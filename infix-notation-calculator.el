@@ -9,6 +9,14 @@
 
 (require 'infix-notation-calculator-parser)
 
+(defvar infix-notation-calculator-font-face
+  '(
+    ("\\([0-9]+\\.[0-9]+\\|[0-9]+\\)" . font-lock-constant-face)
+    ("\\()\\|(\\)" . font-lock-function-name-face)
+    ("\\(+\\|-\\|*\\|\\/\\|\\^\\|=\\)" . font-lock-variable-name-face)
+    )
+  "The default font-face for mode.")
+
 (defvar infix-notation-calculator-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "<C-return>") #'infix-notation-calculator-on-current-line)
@@ -21,11 +29,9 @@
   (setq-local parse-sexp-ignore-comments t)
 
   ;; Font lock
-  ;; This makes it possible to have full control over syntax coloring from the lexer
-  (setq-local font-lock-keywords-only nil)
-  (setq-local font-lock-defaults '(nil t))
-
-  ;; TODO Perhaps fix syntax-coloring?
+  (setq-local
+   font-lock-defaults
+   '(infix-notation-calculator-font-face))
 
   )
 
