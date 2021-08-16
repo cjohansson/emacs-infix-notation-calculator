@@ -4,25 +4,25 @@ Calculate selected region, use the calculator mode or calculate text in the mini
 
 ## Generate parser
 
-Run `make admin`.
+Run `make admin` from terminal.
 
 ## Run tests
 
-Run `make test`.
+Run `make test` from terminal.
 
 ## Activate calculator mode
 
-Run `(infix-notation-calculator-mode)`.
+Call `infix-notation-calculator-mode`.
 
-Press `C-return` to calculate the line you are at.
+In this mode press `C-return` to calculate the line you are at.
 
 ## Calculate selected region
 
-Run `(infix-notation-calculator-on-region)`.
+Call `(infix-notation-calculator-on-region)`.
 
 ## Calculate text in mini-buffer
 
-Run `(infix-notation-calculator-on-minibuffer)`.
+Call `(infix-notation-calculator-on-minibuffer)`.
 
 ## See log of calculations
 

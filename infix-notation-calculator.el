@@ -1,8 +1,59 @@
 ;; infix-notation-calculator.el --- Infix Notation Calculator -*- lexical-binding: t -*-
 
+;; Copyright (C) 2021  Free Software Foundation, Inc.
+
+;; Author: Christian Johansson <christian@cvj.se>
+;; Maintainer: Christian Johansson <christian@cvj.se>
+;; Created: 14 Aug 2021
+;; Modified: 16 Aug 2021
+;; Version: 1.0.0
+;; Keywords: tools, convenience
+;; URL: https://github.com/cjohansson/emacs-infix-notation-calculator
+
+;; Package-Requires: ((emacs "26"))
+
+;; This file is not part of GNU Emacs.
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2, or (at
+;; your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
+
 
 ;;; Commentary:
 
+;; Calculate selected region, use the calculator mode or calculate text in the mini-buffer.  All calculations are stored in history buffer.
+;;
+;; GENERATE PARSER
+;; Run "make admin" from terminal.
+;;
+;; RUN TESTS
+;; Run "make test" from terminal.
+;;
+;; ACTIVATE CALCULATOR MODE
+;; Call `(infix-notation-calculator-mode)'.
+;; In this mode press `C-return' to calculate the line you are at.
+;;
+;; CALCULATE SELECTED REGION
+;; Call `(infix-notation-calculator-on-region)'.
+;;
+;; CALCULATE TEXT IN THE MINI-BUFFER
+;; Call `(infix-notation-calculator-on-minibuffer)'.
+;;
+;; SEE THE LOG OF CALCULATIONS
+;; Just visit the buffer `*InfixCalc History*'.
+;;
+;; TRANSLATE ANY STRING (ADVANCED)
+;; Just call the function `(infix-notation-calculator--translate-string)'.
+;;
 
 ;;; Code:
 
@@ -35,6 +86,7 @@
 
   )
 
+;;;###autoload
 (defun infix-notation-calculator-on-minibuffer ()
   "Calculate results of mini-buffer and output result in messages."
   (interactive)
