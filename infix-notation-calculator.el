@@ -30,7 +30,7 @@
 
 ;;; Commentary:
 
-;; Calculate selected region, use the calculator mode or calculate text in the mini-buffer.  All calculations are stored in history buffer.
+;; Calculate selected region, use the calculator mode or calculate text in the mini-buffer.  All calculations are stored in a history buffer.
 ;;
 ;; GENERATE PARSER
 ;; Run "make admin" from terminal.

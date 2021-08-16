@@ -3,7 +3,7 @@
 [![License GPL 3](https://img.shields.io/badge/license-GPL_3-green.svg)](https://www.gnu.org/licenses/gpl-3.0.txt)
 [![Build Status](https://api.travis-ci.com/cjohansson/emacs-infix-notation-calculator.svg?branch=master)](https://api.travis-ci.com/cjohansson/emacs-infix-notation-calculator.svg?branch=master)
 
-Calculate selected region, use the calculator mode or calculate text in the mini-buffer. All calculations are stored in history buffer.
+Calculate selected region, use the calculator mode or calculate text in the mini-buffer. All calculations are stored in a history buffer.
 
 ## Generate parser
 
@@ -17,7 +17,7 @@ Run `make test` from terminal.
 
 Call `infix-notation-calculator-mode`.
 
-In this mode press `C-return` to calculate the line you are at.
+In this mode press `<C-return>` to calculate the line you are at.
 
 ## Calculate selected region
 
