@@ -1,5 +1,8 @@
 # Infix Notation Calculator - Emacs plugin
 
+[![License GPL 3](https://img.shields.io/badge/license-GPL_3-green.svg)](https://www.gnu.org/licenses/gpl-3.0.txt)
+[![Build Status](https://api.travis-ci.com/cjohansson/emacs-infix-notation-calculator.svg?branch=master)](https://api.travis-ci.com/cjohansson/emacs-infix-notation-calculator.svg?branch=master)
+
 Calculate selected region, use the calculator mode or calculate text in the mini-buffer. All calculations are stored in history buffer.
 
 ## Generate parser
