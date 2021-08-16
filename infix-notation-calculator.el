@@ -90,6 +90,7 @@
       (infix-notation-calculator--log-calculation
        selected-text
        translation)
+      (message "%s" translation)
       translation)))
 
 (defun infix-notation-calculator--translate-string (string)
